@@ -1,24 +1,33 @@
 # Detachment
 
-TODO: Write a gem description
+A transparent Sub / Pub broker for sending messages between objects
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
     gem 'detachment'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install detachment
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+class MyResponder
+  include Detachment
+  subscribe(:foo)
+
+  def foo(name)
+    raise 'This Happened'
+  end
+end
+
+class MyPublisher
+  include Detachment
+
+  def execute
+    publish(:foo, 'bar')
+  end
+end
+
+MyPublisher.new.execute # => RuntimeError 'This Happened'
+```
 
 ## Contributing
 
