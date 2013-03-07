@@ -4,14 +4,30 @@ require_relative '../../../lib/detachment'
 describe Detachment do
   before { Detachment::Store.delete_all }
 
-  it 'subscribes to events' do
+  describe 'subscribing' do
+    it 'to events' do
 
-    class MyResponder
-      include Detachment
-      subscribe(:foo)
+      class MyResponder
+        include Detachment
+        subscribe(:foo)
+      end
+
+      Detachment::Store.find(:foo).should include MyResponder
     end
 
-    Detachment::Store.find(:foo).should == [MyResponder]
+    it 'does not add same class more than one to same event' do
+      class MyResponder
+        include Detachment
+        subscribe(:foo)
+      end
+
+      class MyResponder
+        include Detachment
+        subscribe(:foo)
+      end
+
+      Detachment::Store.find(:foo).size.should == 1
+    end
   end
 
   it 'publishes events' do

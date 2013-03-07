@@ -7,7 +7,7 @@ module Detachment
   class Store
     def self.add(event, klass)
       @@data ||= {}
-      @@data[event] ||= []
+      @@data[event] ||= Set.new
       @@data[event] << klass
     end
 
@@ -18,7 +18,7 @@ module Detachment
 
     def self.delete(event, klass)
       @@data ||= {}
-      @@data[event] ||= []
+      @@data[event] ||= Set.new
       @@data[event].delete(klass)
     end
 
