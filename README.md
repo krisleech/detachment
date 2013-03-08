@@ -14,7 +14,7 @@ class MyResponder
   subscribe(:foo)
 
   def foo(name)
-    raise 'This Happened'
+    raise "#{__callee__} message received with #{name}"
   end
 end
 
@@ -26,7 +26,7 @@ class MyPublisher
   end
 end
 
-MyPublisher.new.execute # => RuntimeError 'This Happened'
+MyPublisher.new.execute # => RuntimeError 'foo message received with bar'
 ```
 
 ## Contributing
