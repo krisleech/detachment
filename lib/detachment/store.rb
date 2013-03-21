@@ -1,23 +1,28 @@
+require 'singleton'
+
 module Detachment
   class Store
-    def self.add(event, klass)
-      @@data ||= {}
-      @@data[event] ||= Set.new
-      @@data[event] << klass
+    include Singleton
+
+    def initialize
+      @data ||= {}
     end
 
-    def self.find(event)
-      @@data ||= {}
-      @@data[event]
+    def add(event, klass, method_map = {})
+      @data[event] ||= Set.new
+      @data[event] << { :klass => klass }.merge(method_map)
     end
 
-    def self.delete(event, klass)
-      @@data ||= {}
-      @@data[event] ||= Set.new
-      @@data[event].delete(klass)
+    def find(event)
+      @data[event]
     end
 
-    def self.delete_all
+    def delete(event, klass)
+      return if @data[event].nil?
+      @data[event].delete(klass)
+    end
+
+    def delete_all
       @@data = nil
     end
   end

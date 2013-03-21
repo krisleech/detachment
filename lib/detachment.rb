@@ -8,12 +8,16 @@ module Detachment
   private
 
   def publish(event, *args)
-    Store.find(event).each { |subscriber| subscriber.new.send(event, *args) }
+    Store.instance.find(event).each do |subscription|
+      klass = subscription[:klass]
+      method = subscription[event] || event
+      klass.new.send(method, *args)
+    end
   end
 
   module ClassMethods
-    def subscribe(event)
-      Store.add(event, self)
+    def subscribe(event, method_map = {})
+      Store.instance.add(event, self, method_map)
     end
   end
 end

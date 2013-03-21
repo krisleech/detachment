@@ -2,7 +2,7 @@ require 'spec_helper'
 require_relative '../../../lib/detachment'
 
 describe Detachment do
-  before { Detachment::Store.delete_all }
+  before { Detachment::Store.instance.delete_all }
 
   describe 'subscribing' do
     it 'to events' do
@@ -12,7 +12,7 @@ describe Detachment do
         subscribe(:foo)
       end
 
-      Detachment::Store.find(:foo).should include MyResponder
+      Detachment::Store.instance.find(:foo).should include({ :klass => MyResponder })
     end
 
     it 'does not add same class more than one to same event' do
@@ -26,7 +26,7 @@ describe Detachment do
         subscribe(:foo)
       end
 
-      Detachment::Store.find(:foo).size.should == 1
+      Detachment::Store.instance.find(:foo).size.should == 1
     end
   end
 
