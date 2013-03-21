@@ -5,12 +5,12 @@ module Detachment
     include Singleton
 
     def initialize
-      @data ||= {}
+      @data = {}
     end
 
     def add(event, klass, method_map = {})
       @data[event] ||= Set.new
-      @data[event] << { :klass => klass }.merge(method_map)
+      @data[event] << Subscription.new(klass, method_map)
     end
 
     def find(event)
@@ -25,5 +25,7 @@ module Detachment
     def delete_all
       @@data = nil
     end
+
+    class Subscription < Struct.new(:klass, :method_map); end
   end
 end

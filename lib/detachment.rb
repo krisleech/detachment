@@ -9,8 +9,8 @@ module Detachment
 
   def publish(event, *args)
     Store.instance.find(event).each do |subscription|
-      klass = subscription[:klass]
-      method = subscription[event] || event
+      klass = subscription.klass
+      method = subscription.method_map.fetch(event) { event }
       klass.new.send(method, *args)
     end
   end

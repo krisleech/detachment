@@ -5,16 +5,6 @@ describe Detachment do
   before { Detachment::Store.instance.delete_all }
 
   describe 'subscribing' do
-    it 'to events' do
-
-      class MyResponder
-        include Detachment
-        subscribe(:foo)
-      end
-
-      Detachment::Store.instance.find(:foo).should include({ :klass => MyResponder })
-    end
-
     it 'does not add same class more than one to same event' do
       class MyResponder
         include Detachment
