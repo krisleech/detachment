@@ -1,3 +1,5 @@
+Now superseded by Wisper: https://github.com/krisleech/wisper
+
 # Detachment
 
 A transparent Sub / Pub broker for sending messages between objects
